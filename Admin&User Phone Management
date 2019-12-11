@@ -1,0 +1,308 @@
+import pymysql
+
+con = pymysql.connect(host="localhost", user="root", password="", database="sky")
+
+cur = con.cursor()
+
+
+def additems(a, b, c, d, e):
+    query1 = "select * from phonedetails where brand='%s' or brandmod='%s'" % (a, b)
+
+    cur.execute(query1)
+
+    z = cur.rowcount
+
+    if z == 0:
+
+        query2 = "insert into phonedetails(brand,brandmod,price,scrsize,disc) values('%s','%s',%d,%f,%d)" % (
+        a, b, c, d, e)
+
+        cur.execute(query2)
+
+        x = cur.rowcount
+
+        if x > 0:
+            print("Item Added")
+
+        else:
+            print("Records with given Brandmodel Exists!!")
+
+
+def viewitems():
+    query = "select * from phonedetails"
+
+    cur.execute(query)
+
+    rec = cur.fetchall()
+
+    print("ID\t\brand\tbrandmod\tprice\tscrsize\tdisc")
+    print(60 * "*")
+
+    for row in rec:
+        for col in row:
+            print(col, end="\t")
+        print()
+
+    x = cur.rowcount
+
+    if x == 0:
+        print("Item doesn't Exists!!!!")
+
+
+def searchitems(search):
+    query = "select * from phonedetails where brand='%s' or brandmod='%s'" % (search, search)
+
+    cur.execute(query)
+
+    rec = cur.fetchall()
+
+    print("ID\t\brand\tbrandmod\tprice\tscrsize\tdisc")
+
+    print(60 * "*")
+
+    for row in rec:
+        for col in row:
+            print(col, end="\t")
+
+        print()
+
+    x = cur.rowcount
+
+    if x == 0:
+        print("Item doesn't Exists!!")
+        print(60 * "*")
+
+
+print("Welcome to Online Shopping")
+
+
+def updateitems(a, b, c):
+    query = "UPDATE phonedetails SET brand='%s', price=%d WHERE brandmod='%s'" % (a, b, c)
+
+    cur.execute(query)
+
+    x = cur.rowcount
+
+    if x > 0:
+        print("Item updated")
+
+    else:
+        print("Item not updated")
+
+
+def deleteitems(delete):
+    query = "delete from phonedetails where brandmod='%s'" % (delete)
+
+    cur.execute(query)
+
+    row = cur.rowcount
+
+    if row > 0:
+
+        print("Item Deleted")
+    else:
+        print("Not Deleted")
+
+
+user = int(input("Enter Option:\n1.Admin\n2.User\n3.Exit\n"""))
+
+print(60 * "*")
+
+while True:
+
+    if user == 1:
+
+        ip = int(input(
+            "Press\n 1.Add Item\n 2.View Item\n 3.Search Item\n 4.Update Item\n 5.Delete Item\n 6.Go to Main Menu\n"))
+
+        if ip == 1:
+            print(60 * "*")
+
+            brand = input("Enter Brand Name\n")
+            brandmod = input("Enter Brand model no\n")
+            price = int(input("Enter Price\n"))
+            scrsize = float(input("Enter Screen Size\n"))
+            disc = int(input("Enter Discount\n"))
+
+            additems(brand, brandmod, price, scrsize, disc)
+
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+
+        elif ip == 2:
+            print(60 * "*")
+
+            viewitems()
+            print(60 * "*")
+
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+        elif ip == 3:
+            print(60 * "*")
+
+            a = input("Enter brand name or brand model to search\n")
+
+            searchitems(a)
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+
+        elif ip == 4:
+            print(60 * "*")
+
+            brand = input("Enter brand\n")
+            price = int(input("Enter Price\n"))
+            brandmod = input("Enter Brand model\n")
+
+            updateitems(brand, price, brandmod)
+
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+        elif ip == 5:
+            print(60 * "*")
+
+            c = input("Enter brandmod\n")
+
+            deleteitems(c)
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+        elif ip == 6:
+            print(60 * "*")
+
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+                user = int(input("Enter Option:\n1.Admin\n2.User\n3.Exit\n"""))
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+
+        else:
+            print("Item not found")
+
+        print(60 * "*")
+
+
+
+    elif user == 2:
+
+        op = int(input("Press\n 1.View\n 2.Search\n 3.Go Back\n"))
+        print()
+
+        if op == 1:
+            print(60 * "*")
+
+            viewitems()
+            print(60 * "*")
+
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+        elif op == 2:
+            print(60 * "*")
+
+            a = input("Enter brand name or brand model to search\n")
+            searchitems(a)
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+        elif op == 3:
+            print(60 * "*")
+
+            choice = input("Enter Y to continue and N to Stop\n")
+
+            if choice == 'Y' or choice == 'y':
+                user = int(input("Enter Option:\n1.Admin\n2.User\n3.Exit\n"""))
+                continue
+            elif choice == 'N' or choice == 'n':
+                print("Visit Again")
+                break
+            else:
+                print("Wrong choice and Exit")
+                break
+
+        else:
+            print("Wrong option selected")
+            break
+
+    elif user == 3:
+        print("Bye----Visit Again")
+        break
+    else:
+        print("Wrong number selected")
+        break
+
+con.commit()
+con.close()
